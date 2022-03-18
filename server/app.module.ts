@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { config } from './database/config';
+import { ChatRoomsModule } from './modules/chat_rooms.module';
 import { UsersModule } from './modules/users.module';
 import { PingGateway } from './providers/gateways/ping.gateway';
 import { AuthGuard } from './providers/guards/auth.guard';
@@ -13,7 +14,7 @@ import { UsersService } from './providers/services/users.service';
 import { GuardUtil } from './providers/util/guard.util';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), UsersModule],
+  imports: [TypeOrmModule.forRoot(config), UsersModule, ChatRoomsModule],
   controllers: [AppController],
   providers: [
     PingGateway,

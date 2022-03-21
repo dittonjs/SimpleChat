@@ -18,6 +18,6 @@ export class Message {
   @Column()
   userName: string;
 
-  @ManyToOne((type) => ChatRoom, (chatRoom) => chatRoom.messages)
+  @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.messages)
   chatRoom: ChatRoom;
 }

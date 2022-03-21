@@ -12,6 +12,6 @@ export class ChatRoom {
   @Column()
   roomkey: string;
 
-  @OneToMany((type) => Message, (message) => message.chatRoom)
+  @OneToMany(() => Message, (message) => message.chatRoom)
   messages: Message[];
 }

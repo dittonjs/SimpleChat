@@ -17,7 +17,6 @@ import { GuardUtil } from './providers/util/guard.util';
   imports: [TypeOrmModule.forRoot(config), UsersModule, ChatRoomsModule],
   controllers: [AppController],
   providers: [
-    PingGateway,
     UsersService,
     RolesService,
     JwtService,

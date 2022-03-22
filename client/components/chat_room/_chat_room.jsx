@@ -1,20 +1,19 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../../utils/auth_context';
 import { ApiContext } from '../../utils/api_context';
-import { io } from 'socket.io-client';
+
 import { Button } from '../common/button';
+import { useMessages } from '../../utils/use_messages';
 
 export const ChatRoom = () => {
   const [chatRoom, setChatRoom] = useState(null);
   const [contents, setContents] = useState('');
-  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [socket, setSocket] = useState(null);
-  const [authToken] = useContext(AuthContext);
   const api = useContext(ApiContext);
   const { id } = useParams();
+  console.log(id);
+  const [messages, sendMessage] = useMessages(chatRoom);
 
   useEffect(async () => {
     const { user } = await api.get('/users/me');
@@ -24,31 +23,7 @@ export const ChatRoom = () => {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (chatRoom) {
-      const socket = io({
-        auth: {
-          token: authToken,
-        },
-        query: {
-          chatRoomId: chatRoom.id,
-        },
-      });
-      setSocket(socket);
-      socket.on('message', (message) => {
-        setMessages([...messages, message]);
-      });
-    }
-  }, [chatRoom]);
-
   if (loading) return 'Loading...';
-
-  const sendMessage = () => {
-    socket.emit('message', {
-      contents,
-      userName: `${user.firstName} ${user.lastName}`,
-    });
-  };
 
   return (
     <div>
@@ -62,7 +37,7 @@ export const ChatRoom = () => {
       </div>
       <div>
         <input type="text" value={contents} onChange={(e) => setContents(e.target.value)} />
-        <Button onClick={sendMessage}>Send</Button>
+        <Button onClick={() => sendMessage(contents, user)}>Send</Button>
       </div>
     </div>
   );

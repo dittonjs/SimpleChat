@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ChatRoom } from 'server/entities/chat_room.entity';
 import { ChatRoomsService } from 'server/providers/services/chat_rooms.service';
 import * as crypto from 'crypto';
@@ -18,8 +18,8 @@ export class ChatRoomsController {
   }
 
   @Get('/chat_rooms/:id')
-  async show(id: number) {
-    const chatRoom = await this.chatRoomsService.findOne(id);
+  async show(@Param('id') id: string) {
+    const chatRoom = await this.chatRoomsService.findOne(parseInt(id));
     return { chatRoom };
   }
 

@@ -29,12 +29,12 @@ export const ChatRoom = () => {
 
   return (
     <div className="chat-container">
-      <div>
-        {messages.map((message) => (
+      <div className="messages">
+        {[...messages].reverse().map((message) => (
           <Message key={message.id} message={message} />
         ))}
       </div>
-      <div>
+      <div className="chat-input">
         <input type="text" value={contents} onChange={(e) => setContents(e.target.value)} />
         <Button onClick={() => sendMessage(contents, user)}>Send</Button>
       </div>
